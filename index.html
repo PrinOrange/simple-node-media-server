@@ -1,0 +1,84 @@
+<html>
+  <head>
+    <title>Video Server</title>
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div>
+      <h2>上传视频文件</h2>
+      <!-- 利用表单上传文件 -->
+      <form id="uploadForm" method="POST" enctype="multipart/form-data">
+        <input type="file" name="video" accept="video/*" />
+        <button type="submit">上传</button>
+      </form>
+      <div id="response"></div>
+      <script>
+        // 获取表单元素
+        const form = document.getElementById("uploadForm");
+        // 监听表单提交事件
+        form.addEventListener("submit", function (event) {
+          event.preventDefault(); // 阻止默认提交行为
+          // 创建 FormData 对象，用于将表单数据发送到服务器
+          const formData = new FormData(form);
+          // 发送表单数据到服务器
+          fetch("http://localhost:3300/upload", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.text()) // 将响应转换为文本格式
+            .then((data) => {
+              // 将服务器返回的文本数据显示在页面上
+              document.getElementById("response").innerText =
+                "上传成功，视频地址是：" + data;
+            })
+            .catch((error) => {
+              console.error("请求错误:", error);
+            });
+        });
+      </script>
+    </div>
+
+    <hr />
+
+    <div>
+      <h2>播放视频</h2>
+      <!-- 输入m3u8地址 -->
+      <label for="m3u8-url">请输入视频的m3u8地址：</label>
+      <input
+        type="text"
+        id="m3u8-url"
+        name="m3u8-url"
+        placeholder="例如：https://example.com/video.m3u8"
+      />
+      <button onclick="playVideo()">播放</button>
+
+      <!-- 视频播放器 -->
+      <video
+        id="my-video"
+        class="video-js"
+        controls
+        preload="auto"
+        width="640"
+        height="360"
+        data-setup="{}"
+      >
+        <source src="" type="application/x-mpegURL" />
+      </video>
+      <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+      <script>
+        function playVideo() {
+          // 获取输入的m3u8地址
+          var m3u8Url = document.getElementById("m3u8-url").value;
+          // 设置视频源为输入的m3u8地址
+          var videoPlayer = videojs("my-video");
+          videoPlayer.src({
+            src: m3u8Url,
+            type: "application/x-mpegURL",
+          });
+          // 播放视频
+          videoPlayer.play();
+        }
+      </script>
+    </div>
+  </body>
+</html>

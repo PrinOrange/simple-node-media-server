@@ -1,0 +1,20 @@
+{
+  "name": "simple-node-media-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "node main.js & npx serve"
+  },
+  "author": "",
+  "license": "CC0-1.0",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.1",
+    "fluent-ffmpeg": "^2.1.2",
+    "lodash": "^4.17.21",
+    "multer": "^1.4.5-lts.1",
+    "nanoid": "^5.0.6"
+  }
+}
